@@ -1,21 +1,24 @@
-import OpenAI from "openai"
+import OpenAI from 'openai';
 
-interface Options{
-    prompt:string
+interface Options {
+  prompt: string;
+}
+export interface OrthographyResponse {
+  userScore: number;
+  errors: string[];
+  message: string;
 }
 
+export const orthographyCase = async (openai: OpenAI, options: Options) => {
+  const { prompt } = options;
 
-export const orthographyCase=async(openai:OpenAI,options:Options)=>{
-    
-    const {prompt}=options
-
-    const completion = await openai.chat.completions.create({
-    model: "gpt-4",
-    max_tokens:150,
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4',
+    max_tokens: 150,
     messages: [
-        {
-            role: "system",
-            content: ` Te serán proveídos textos con posibles errores ortográficos y gramaticales.
+      {
+        role: 'system',
+        content: ` Te serán proveídos textos con posibles errores ortográficos y gramaticales.
                         Las palabras usadas deben estar en español,de no estarlo dar la solución,
                         debe existir en el diccionario de la real academia española,
                         por mas que exista la palabra analizar si esta bien implementada, de no estar bien implementada devolverlo como error,
@@ -30,20 +33,18 @@ export const orthographyCase=async(openai:OpenAI,options:Options)=>{
                             message:string  //Usa texto y emojis para felicitar al usuario                      
                         } 
                                             
-                        `
-           
-        },
-        {
-            role:"user",
-            content:prompt
-        },
-       
+                        `,
+      },
+      {
+        role: 'user',
+        content: prompt,
+      },
     ],
-});
+  });
 
-const json=JSON.parse(completion.choices[0].message.content!)
+  const json = JSON.parse(
+    completion.choices[0].message.content!,
+  ) as OrthographyResponse;
 
-return json;
-  
- 
-}
+  return json;
+};

@@ -3,7 +3,7 @@ import { GptModule } from './gpt/gpt.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ConfigModule.forRoot(),GptModule],
+  imports: [ConfigModule.forRoot(), GptModule],
   controllers: [],
   providers: [],
 })
