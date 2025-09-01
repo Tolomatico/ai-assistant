@@ -14,11 +14,11 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GptService } from './gpt.service';
 import {
+  ImageGenerationDto,
   orthographyDto,
   ProsConsDiscusserDto,
   TextToAudioDto,
   TranslateDto,
-  AudioToTextDto,
 } from './dtos';
 import type { Response } from 'express';
 import { diskStorage } from 'multer';
@@ -82,8 +82,8 @@ export class GptController {
   }
 
   @Post('translate')
-  translate(@Body() translateDto: TranslateDto) {
-    return this.gptService.translate(translateDto);
+  async translate(@Body() translateDto: TranslateDto) {
+    return await this.gptService.translate(translateDto);
   }
 
   @Post('text-to-audio')
@@ -98,8 +98,8 @@ export class GptController {
   }
 
   @Get('text-to-audio/:fileId')
-  async getTextToAudio(@Param('fileId') fileId: string, @Res() res: Response) {
-    const file = await this.gptService.textToAudioGetter(fileId);
+  getTextToAudio(@Param('fileId') fileId: string, @Res() res: Response) {
+    const file = this.gptService.textToAudioGetter(fileId);
 
     res.setHeader('Content-Type', 'audio/mp3');
     res.status(HttpStatus.OK);
@@ -142,5 +142,10 @@ export class GptController {
     }
 
     return this.gptService.audioToText(audioFile);
+  }
+
+  @Post('image-generation')
+  imageGeneration(@Body() imageGenerationDto: ImageGenerationDto) {
+    return this.gptService.imageGeneration(imageGenerationDto);
   }
 }

@@ -8,8 +8,10 @@ import {
   prosConsDicusserStreamCase,
   textToAudioCase,
   translateCase,
+  imageGenerationCase,
 } from './use-cases';
 import {
+  ImageGenerationDto,
   orthographyDto,
   ProsConsDiscusserDto,
   TextToAudioDto,
@@ -22,7 +24,8 @@ import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js';
 export class GptService {
   private openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
-    baseURL: 'https://openrouter.ai/api/v1',
+    baseURL: 'http://localhost:11434/api/generate',
+    // baseURL: 'https://openrouter.ai/api/v1',
   });
 
   private elevenLabs = new ElevenLabsClient({
@@ -62,5 +65,9 @@ export class GptService {
 
   async audioToText(audioFile: Express.Multer.File) {
     return await audioToTextCase(this.elevenLabs, { audioFile: audioFile });
+  }
+
+  async imageGeneration(imageGenerationDto: ImageGenerationDto) {
+    return await imageGenerationCase(this.openai, imageGenerationDto);
   }
 }
