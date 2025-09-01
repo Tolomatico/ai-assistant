@@ -11,7 +11,7 @@ export const prosConsDicusserStreamCase = async (
   const { prompt } = options;
 
   return await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
+    model: 'openai/gpt-3.5-turbo',
     stream: true,
     temperature: 0.8,
     max_tokens: 300,

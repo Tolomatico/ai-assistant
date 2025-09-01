@@ -24,8 +24,8 @@ import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js';
 export class GptService {
   private openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
-    baseURL: 'http://localhost:11434/api/generate',
-    // baseURL: 'https://openrouter.ai/api/v1',
+    //baseURL: 'http://localhost:11434/api/generate',
+     baseURL: 'https://openrouter.ai/api/v1',
   });
 
   private elevenLabs = new ElevenLabsClient({

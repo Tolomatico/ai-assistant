@@ -10,6 +10,7 @@ export const imageGenerationCase = async (ai: OpenAI, options: Options) => {
   const { prompt } = options;
 
   const req = await ai.images.generate({
+    model: "openai/dall-e-3",
     prompt,
     n: 1,
     size: '1024x1024',

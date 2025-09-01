@@ -1,9 +1,10 @@
 import axios from "axios";
-import { terms } from "../terms";
+import OpenAI from "openai";
+import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 
-interface Message{
-    role:string 
-    content:string
+interface Message {
+    role: "system" | "user" | "assistant" | "function";
+    content: string;
 }
 
 interface OllamaGenerateResponse {
@@ -18,30 +19,13 @@ interface OllamaGenerateResponse {
   eval_count: number;
 }
 
-export async function toloAssistant(messages: Message[]) {
+export async function toloAssistant(messages: Message[],openai: OpenAI) {
+
+
   const systemPrompt = {
     role: "system",
-    content: `Tu nombre es Sam, una abogada para una tienda en línea.
-
-Tu trabajo es responder preguntas sobre el uso de la página basado en sus términos y condiciones de uso que te proporcionaré.
-
-Se amable y cordial siempre.
-
-Sita los títulos de los términos en tus respuestas si es posible.
-
-Si no conoces la respuesta, puedes escalar el caso a: "Fernando Herrera fernando@google.com" o al teléfono de asistencia +1.800.123.3212.
-
-Los prompts deben ser saludos de bienvenida cordiales.
-
-Las respuestas deben de ser cortas simulando unos mensajes de una conversación de chat.
-
-Pregunta el nombre de la persona para tratarlo de forma más personal.
-
-Si conoces el nombre de la persona, por favor escríbelo. 
-${terms}`
-  };
-
-  
+    content:"Eres un asistente de ia llamado tolobot, tu trabajo es responder sobre el sitio web,el cual tiene secciones para traducir,corregir ortografía y generar comparaciones,ademas de la sección con el asistente que serias vos.Responde con amabilidad y respuestas cortas"
+  }
   const messagesWithSystem = [systemPrompt, ...messages.map(i => ({
     role: i.role,
     content: i.content
@@ -52,12 +36,26 @@ ${terms}`
     .map(m => `${m.role.toUpperCase()}: ${m.content}`)
     .join("\n") + "\nASSISTANT:";
 
-  const url = 'http://localhost:11434/api/generate';
-  const response = await axios.post<OllamaGenerateResponse>(url, {
-    model: "llama3",
-    prompt,
-    stream: false,
+
+  const response = await openai.chat.completions.create({
+    model: "openai/gpt-3.5-turbo",
+    messages: messagesWithSystem as ChatCompletionMessageParam[],
   });
 
-  return response.data.response;
+  if(!response.choices[0].message.content){
+    return "No se pudo realizar la respuesta";
+  }
+
+  return response.choices[0].message.content;
+
+
+  // En local
+  // const url = 'http://localhost:11434/api/generate';
+  // const response = await axios.post<OllamaGenerateResponse>(url, {
+  //   model: "llama3",
+  //   prompt,
+  //   stream: false,
+  // });
+
+  // return response.data.response;
 }
