@@ -13,8 +13,7 @@ export const orthographyCase = async (openai: OpenAI, options: Options) => {
   const { prompt } = options;
 
   const completion = await openai.chat.completions.create({
-    model: 'openai/gpt-4',
-    max_tokens: 100,
+    model: "gpt-3.5-turbo",
     messages: [
       {
         role: 'system',
