@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import { GptMessage, MyMessage, TypingLoader, TextMessageBox } from "../../components"
-import { prosConsStreamCase, prosConsStreamGeneratorCase } from "../../../core/use-cases"
+import {  prosConsStreamGeneratorCase } from "../../../core/use-cases"
 
 
 interface Message{

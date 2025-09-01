@@ -2,7 +2,7 @@
 interface Props {
   userScore:number
   message:string
-  errors:string[]
+  errors?:string[]
 }
 
 export const GptOrthographyMessage = ({
@@ -20,13 +20,13 @@ export const GptOrthographyMessage = ({
             <h3 className="text-3xl">Puntaje: {userScore}%</h3>
             <p>{message}</p>
             {
-             ( errors.length===0 )?
+             ( errors?.length===0 )?
                <p>No se encontaron errores,perfecto!</p>:
                (<div>
               <h3 className="text-2xl">Errores encontrados</h3>
                   <ul>
                     {
-                      errors.map((error,i)=>(
+                      errors?.map((error,i)=>(
                         <li key={i}>{error}</li>
                       ))
                     }

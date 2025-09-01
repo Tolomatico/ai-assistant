@@ -14,7 +14,7 @@ export const orthographyCase = async (openai: OpenAI, options: Options) => {
 
   const completion = await openai.chat.completions.create({
     model: 'openai/gpt-4',
-    max_tokens: 150,
+    max_tokens: 100,
     messages: [
       {
         role: 'system',
@@ -41,6 +41,7 @@ export const orthographyCase = async (openai: OpenAI, options: Options) => {
       },
     ],
   });
+ 
 
   const json = JSON.parse(
     completion.choices[0].message.content!,

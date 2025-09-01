@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { GptMessage, MyMessage, TypingLoader, TextMessageBox } from "../../components"
 import { assistantCase } from "../../../core/use-cases"
 
