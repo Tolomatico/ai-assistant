@@ -9,7 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     ConfigModule.forRoot(),
     GptModule,
     ToloAssistantModule,
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/tolo-assistant'),
+    MongooseModule.forRoot(process.env.MONGO_URL!),
   ],
   controllers: [],
   providers: [],
